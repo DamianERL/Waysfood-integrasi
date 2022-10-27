@@ -11,7 +11,7 @@ export default function dropdown() {
   const [state, dispatch] = useContext(UserContext);
   const [carts,setCarts]=useContext(CartContext)
 
-
+  console.log("status di cart",state)
   console;
   const hadleLogout = () => {
     dispatch({
@@ -22,7 +22,8 @@ export default function dropdown() {
   return (
     <>
       <div className="flex justify-center items-center gap-4">
-        {state.user.status === "customer"?
+        {state.user.role === "customer"?
+        
         <img  
         onClick={() => router.push("/cart")}
         className="cursor-pointer  w-9 h-9"
@@ -30,6 +31,8 @@ export default function dropdown() {
         alt=""
         />
         :""}
+        {state.user.role === "customer"?
+        
         <div className=
           {carts.cart?.length ===null
           ?"hidden"
@@ -40,6 +43,7 @@ export default function dropdown() {
           :"circle"
           }>{carts.cart?.length}
         </div>
+        :""}
         <img
           onClick={() => {
             setModalProfil(true);
@@ -51,7 +55,7 @@ export default function dropdown() {
         <Dropdown isVisible={modalProfil} onClose={() => setModalProfil(false)}>
           <div className=" flex justify-center items-center">
             <div className=" gap-4 flex flex-col ">
-              {state.user.status === "admin" ? (
+              {state.user.role === "patner" ? (
                 <Link href="/profil-patner">
                   <div className="flex items-center ">
                     <img
@@ -72,7 +76,7 @@ export default function dropdown() {
                   </div>
                 </Link>
               )}
-              {state.user.status === "admin" ? (
+              {state.user.role === "patner" ? (
                 <Link href="/add-product">
                   <div className="flex items-center">
                     <img

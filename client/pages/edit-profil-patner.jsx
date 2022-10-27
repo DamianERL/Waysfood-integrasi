@@ -19,7 +19,7 @@ export default function editProfilPatner() {
     if(e.target.type === "file")
     setpreImage(e.target.files[0].name) 
 
-    console.log(preImage)
+    // console.log(preImage)
   };
 
   return (

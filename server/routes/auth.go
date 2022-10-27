@@ -2,6 +2,7 @@ package routes
 
 import (
 	"waysfood/handlers"
+	"waysfood/pkg/middleware"
 	"waysfood/pkg/mysql"
 	"waysfood/repositories"
 
@@ -14,5 +15,5 @@ func AuthRoutes(r *mux.Router) {
 
   r.HandleFunc("/register", h.Register).Methods("POST")
   r.HandleFunc("/login", h.Login).Methods("POST")
-
+  r.HandleFunc("/get-user",middleware.Auth( h.Getuser)).Methods("GET")
 }

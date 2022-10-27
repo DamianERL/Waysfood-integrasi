@@ -20,7 +20,7 @@ export default function EditProfil() {
       setPreview(e.target.files[0].name);
       // problem check again
     }
-    console.log(profile);
+    // console.log(profile);
   };
   return (
     <>

@@ -16,7 +16,7 @@ export default function Header() {
 
   const [state,dispatch]=useContext(UserContext)
   const handleclick =()=> setShowMLogin(true)
-console.log(state.user.status)
+// console.log(state.user.status)
 
   return (
     <>
@@ -67,7 +67,7 @@ console.log(state.user.status)
           </div>
             <section>
               <h3 className='text-4xl font-font_a mt-10 mb-10' >Restauran Near You</h3>
-              <div className='grid md:grid-cols-4 gap-2 rounded-lg pb-10'>
+              <div className='grid md:grid-cols-4 gap-2 rounded-lg pb-10PP'>
               {dummy?.map((item,index)=>(
                 <div 
                 onClick={state.isLogin === true

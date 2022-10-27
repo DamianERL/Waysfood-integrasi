@@ -25,7 +25,7 @@ export default function Cart() {
   const data = carts.cart;
   const [map,setMap]= useState(false)
 
-  console.log(map)
+  // console.log(map)
 
   return (
     <>
@@ -69,7 +69,7 @@ export default function Cart() {
             >
               <div className=" ">
                 {data?.map((item, index) => (
-                  <div className="grid grid-cols-3 mb-6 ">
+                  <div key={index} className="grid grid-cols-3 mb-6 ">
                     <div className=" cols-span-1">
                       <img
                         className="ml-10 w-[10rem] rounded h-[6rem] "

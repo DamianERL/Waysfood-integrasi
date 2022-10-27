@@ -35,7 +35,6 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 		return
 	}
-	
 
 	validation := validator.New()
 	err := validation.Struct(request)
@@ -120,14 +119,40 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loginResponse := authdto.LoginResponse{
-		Name:     user.Name,
-		Email:    user.Email,
-		Password: user.Password,
-		Token:    token,
+		Name:  user.Name,
+		Email: user.Email,
+		Role:  user.Role,
+		// Password: user.Password,
+		Token: token,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	response := dto.SuccessResult{Status: "success", Data: loginResponse}
 	json.NewEncoder(w).Encode(response)
 
+}
+
+func (h *handlerAuth) Getuser(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
+	userId := int(userInfo["id"].(float64))
+	user, err := h.AuthRepository.Getuser(userId)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	data := authdto.AuthResponse{
+		ID:    user.ID,
+		Name:  user.Name,
+		Email: user.Email,
+		Role:  user.Role,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	response := dto.SuccessResult{Status: "Success", Data: data}
+	json.NewEncoder(w).Encode(response)
 }
