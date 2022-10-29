@@ -1,63 +1,109 @@
-import React, { useState } from 'react'
-import Button from '../components/Atoms/button'
-import Input from '../components/Atoms/input'
-import Layout from '../components/layout'
-import Navbar from '../components/Navbar/navbar'
-
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useMutation } from "react-query";
+import Button from "../components/Atoms/button";
+import Input from "../components/Atoms/input";
+import Layout from "../components/layout";
+import Navbar from "../components/Navbar/navbar";
+import { API } from "../config/api";
+// import profile from "../public/dummy/profile";
 
 export default function editProfilPatner() {
-  const [patner,setPatner]= useState("")
-  const [preImage,setpreImage]= useState(null)
+  const router = useRouter();
 
-  const handleChange = (e)=>{
-    // e.preventDefault()
+  const [patner, setPatner] = useState("");
+  const [preImage, setpreImage] = useState(null);
+
+  const [data,setData]=useState([])
+
+  const handleChange = (e) => {
+    e.preventDefault();
     setPatner({
       ...patner,
       [e.target.name]:
-      e.target.type === "file"? e.target.files :e.target.value
+        e.target.type === "file" ? e.target.files : e.target.value,
     });
-    if(e.target.type === "file")
-    setpreImage(e.target.files[0].name) 
-
-    // console.log(preImage)
+    if (e.target.type === "file") setpreImage(e.target.files[0].name);
   };
+
+  useEffect(()=>{
+    const getData= async(e)=>{
+      try {
+        const res = await API.get("/get-user")
+        setPatner(res.data.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData()
+  },[setData])
+
+  const handleSubmit=useMutation(async(e)=>{
+    try {
+      e.preventDefault()
+      const formData = new FormData();
+      // formData(patner)
+      formData.set("name", patner.name);
+      formData.set("email", patner.email);
+      formData.set("phone", patner.phone);
+      formData.set("location", patner.location);
+      formData.set("imagename", patner.image);
+      if(preImage){
+        formData.set("image",patner?.image[0],patner?.image[0]?.name)
+      }
+      const res =await API.patch("/user",formData) 
+      console.log("res",res)
+      router.push("profil-patner")
+    } catch (error) {
+      console.log(error);
+    }
+  })
 
   return (
     <>
-    <Layout title="Edit-Profil-Patner">
-    <Navbar />
+      <Layout title="Edit-Profil-Patner">
+        <Navbar />
         <div>
           <div className="my-12 mx-16">
-            <p className="font-extrabold text-4xl font-font_a">Edit Profile Patner</p>
+            <p className="font-extrabold text-4xl font-font_a">
+              Edit Profile Patner
+            </p>
 
-            <form className="grid md:grid-cols-12 gap-2">
+            <form
+              onSubmit={(e) => handleSubmit.mutate(e)}
+              className="grid md:grid-cols-12 gap-2"
+            >
               <div className="grid col-span-8">
                 <Input
-                  name="nameProfil"
+                  name="name"
                   onChange={handleChange}
                   type="text"
                   placeholder="Full Name"
+                  defaultValue={patner.name}
                 />
               </div>
               <div className="grid col-span-4">
                 <label
                   className="bg-fontPrimary h-10 hover:bg-fontPrimary/90 text-white w-full pt-2 text-center text-xs font-bold transition duration-300 rounded"
-                  htmlFor="image"
+                  htmlFor="imageProfil"
                 >
-                  <div className="text-white" >{preImage ? preImage : "Attach Image"}</div>
+                  <div className="text-white">
+                    {preImage ? preImage : "Attach Image"}
+                  </div>
                 </label>
                 <Input
-                  name="imageProfil"
+                  id="imageProfil"
                   hidden
                   onChange={handleChange}
-                  id="image"
                   type="file"
+                  name="image"
                 />
               </div>
               <div className="grid col-span-12">
                 <Input
                   name="email"
                   type="email"
+                  defaultValue={patner.email}
                   onChange={handleChange}
                   placeholder="Email"
                 />
@@ -65,16 +111,18 @@ export default function editProfilPatner() {
               <div className="grid col-span-12">
                 <Input
                   name="phone"
-                  type="tell"
+                  type="number"
                   onChange={handleChange}
                   placeholder="Phone"
+                  defaultValue={patner.phone}
                 />
               </div>
               <div className="grid col-span-8">
                 <Input
-                  name="locatio"
+                  name="location"
                   type="text"
                   placeholder="Location"
+                  defaultValue={patner.location}
                   onChange={handleChange}
                 />
               </div>
@@ -96,7 +144,7 @@ export default function editProfilPatner() {
             </form>
           </div>
         </div>
-    </Layout>
+      </Layout>
     </>
-  )
+  );
 }

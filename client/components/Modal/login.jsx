@@ -1,4 +1,3 @@
-
 //import
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
@@ -24,7 +23,7 @@ export default function Login() {
       [e.target.name]: e.target.value,
     });
   };
-  
+
   const handleSubmit = useMutation(async (e) => {
     try {
       e.preventDefault();
@@ -32,13 +31,12 @@ export default function Login() {
       const body = JSON.stringify(input);
 
       const response = await API.post("/login", body);
-      console.log("ini login",response)
+      // console.log("ini login", response);
 
       dispatch({
         type: "LOGIN_SUCCESS",
         payload: response.data.data,
       });
-
     } catch (error) {}
   });
 
@@ -51,7 +49,8 @@ export default function Login() {
           className="flex flex-col justify-center item-center"
         >
           <div className="w-[22rem]">
-            <Input onChange={handleChange} placeholder="EMAIL" name="email" />
+            <Input onChange={handleChange} 
+            placeholder="EMAIL" name="email" />
             <Input
               style="mt-3  "
               type="password"

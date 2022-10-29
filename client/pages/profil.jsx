@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Button from '../components/Atoms/button'
 import Navbar from '../components/Navbar/navbar'
 import Dprofile from '../public/dummy/profile'
@@ -6,14 +6,30 @@ import Order from '../public/dummy/order'
 import rupiah from 'rupiah-format'
 import { useRouter } from 'next/router'
 import Layout from '../components/layout'
+import { API } from '../config/api'
+
 
 export default function Profil() {
   const router= useRouter()
-
+  const [profil,setProfil]=useState("")
+  const [profils,setProfils]=useState("")
   const handleClick =(e)=>{
     e.preventDefault()
     router.push("/edit-profil")
   }
+
+  useEffect(()=>{
+    const getData =async(e)=>{
+      try {
+        const res = await API.get("/get-user")
+        setProfils(res.data.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData()
+  },[setProfil])
+
   return (
     <>
     <Layout title="profile">
@@ -24,18 +40,20 @@ export default function Profil() {
         <div key={index} className='' >
           <p  className=' font-extrabold text-3xl font-font_a mb-5' >My Profile</p>
           <div className='flex gap-8' >
-            <img className='w-44 rounded-md h-56' src={item.image} alt="" />
+            <img className='w-44 rounded-md h-56'
+            src={profils.image}
+            alt="" />
             <div >
               <div >
                 <p className='text-fontPrimary font-extrabold text-lg' >Full Name</p>
-                <p className='font-normal text-lg'>{item.name}</p>
+                <p className='font-normal text-lg'>{profils.name}</p>
               </div>
               <div>
               <p className='font-extrabold text-fontPrimary text-lg' >Email</p>
-              <p className='font-normal text-lg'>{item.email}</p>
+              <p className='font-normal text-lg'>{profils.email}</p>
               </div>
               <p className='text-fontPrimary font-extrabold text-lg' >Phone</p>
-              <p className='font-normal text-lg'>{item.phone}</p>
+              <p className='font-normal text-lg'>{profils.phone}</p>
             </div>
           </div>
           <Button onClick={handleClick} style='w-44 py-2 mt-4 bg-fontPrimary hover:bg-fontPrimary/90' >Edit Profile</Button>

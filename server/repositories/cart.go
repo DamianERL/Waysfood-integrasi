@@ -12,6 +12,12 @@ type CartRepository interface {
 	CreateCart(cart models.Cart) (models.Cart, error)
 	UpdateCart(cart models.Cart) (models.Cart, error)
 	DeleteCart(cart models.Cart) (models.Cart, error)
+	//takutnya cart yang udah suksess malah ke fetching juga
+	//kita nyari cart yang statusnya masih pending /belum dibayar(biar data yang
+	//udah di fetching bakal tinggal di chart dan yang sudah tidak tinggal di cart)
+	FindbyIDCart(CartId int, Status string) (models.Cart, error)
+	//ngk dipakai
+	GetOneCart(ID int) (models.Cart, error)
 }
 
 func RepositoryCart(db *gorm.DB) *repository {
@@ -45,5 +51,12 @@ func (r *repository) UpdateCart(cart models.Cart) (models.Cart, error) {
 
 func (r *repository) DeleteCart(cart models.Cart) (models.Cart, error) {
 	err := r.db.Delete(&cart).Error
+	return cart, err
+}
+
+func (r *repository) FindbyIDCart(ID int) (models.Cart, error) {
+	var cart models.Cart
+	err := r.db.Preload("Product").Preload("Product.User").Preload("Buyer").Preload("Seller").First(&cart, "id=?", ID).Error
+
 	return cart, err
 }

@@ -12,6 +12,7 @@ type OrderRepository interface {
 	CreateOrder(order models.Order) (models.Order, error)
 	UpdateOrder(order models.Order) (models.Order, error)
 	DeleteOrder(order models.Order) (models.Order, error)
+	//sebelum kita order dia nyari cart dulu /untuk dimasukin order
 	GetCartID(UserID int) (models.Cart, error)
 }
 

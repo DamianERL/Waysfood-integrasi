@@ -8,8 +8,8 @@ export default function Transaction() {
     <>
     <Layout title="Transaction">
         <Navbar/>
-    <div className='my-24 mx-28'>   
-        <p>Income Transaction</p>
+    <div className='my-20 mx-24'>   
+        <p className='text-4xl mb-8 font-bold '  >Income Transaction</p>
         <div>
             <table className='border-collapse border table-auto rounded border-slate-500 bg-white' >
                 <thead  >

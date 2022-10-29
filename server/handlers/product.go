@@ -36,7 +36,7 @@ func (h *handlerProduct) FindProducts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for i, p := range products {
-		products[i].Image = path_file + p.Image
+		products[i].Image = p.Image
 	}
 
 	w.WriteHeader(http.StatusOK)
@@ -56,7 +56,7 @@ func (h *handlerProduct) GetProduct(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	product.Image = path_file + product.Image
+	// product.Image = path_file + product.Image
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Status: "success", Data: product}
@@ -82,7 +82,7 @@ func (h *handlerProduct) CreateProduct(w http.ResponseWriter, r *http.Request) {
 	product := models.Product{
 		Name:   request.Name,
 		Price:  request.Price,
-		Image:  filename,
+		Image:  path_file + filename,
 		UserID: userId,
 	}
 

@@ -1,18 +1,33 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 // import Modal from '../Atoms/modal'
 import Dropdown from "../Atoms/dropdown";
 import Link from "next/link";
 import { UserContext } from "../../app/userContext";
 import { CartContext } from "../../app/cartContext";
+import { API } from "../../config/api";
 export default function dropdown() {
   const router = useRouter();
   const [modalProfil, setModalProfil] = useState(false);
   const [state, dispatch] = useContext(UserContext);
   const [carts,setCarts]=useContext(CartContext)
 
-  console.log("status di cart",state)
-  console;
+  const [imagep,setImagep]=useState("")
+  const [data,setData]=useState("")
+
+  useEffect(()=>{
+    const getData= async(e)=>{
+      try {
+        const res= await API.get("/get-user")
+        setImagep(res.data.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData()
+  },[setData])
+  
+
   const hadleLogout = () => {
     dispatch({
       type: "LOGOUT",
@@ -49,7 +64,7 @@ export default function dropdown() {
             setModalProfil(true);
           }}
           className="w-16 h-16 cursor-pointer  rounded-full"
-          src="https://res.cloudinary.com/fnxr/image/upload/v1665621418/taejune-kim-blonde-gtz-pnix-taejunekim_zzgsfj.jpg"
+          src={imagep.image}
           alt=""
         />
         <Dropdown isVisible={modalProfil} onClose={() => setModalProfil(false)}>

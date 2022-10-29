@@ -1,27 +1,82 @@
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useMutation } from "react-query";
 import Button from "../components/Atoms/button";
 import Input from "../components/Atoms/input";
 import Layout from "../components/layout";
 import Navbar from "../components/Navbar/navbar";
+import { API } from "../config/api";
 
 export default function EditProfil() {
-  const [profile, setProfile] = useState("");
-  const [preview ,setPreview] = useState(null);
+  const router = useRouter();
 
-  //form
+  const [preview, setPreview] = useState(null);
+  const [data, setData] = useState([]);
+  const [profile, setProfile] = useState("");
+
+  // console.log(preview);
+  // console.log(profile);
+
   const handleChange = (e) => {
     setProfile({
       ...profile,
       [e.target.name]:
         e.target.type === "file" ? e.target.files : e.target.value,
     });
-    
+
     if (e.target.type === "file") {
       setPreview(e.target.files[0].name);
-      // problem check again
     }
-    // console.log(profile);
   };
+
+  useEffect(() => {
+    const getData = async (e) => {
+      try {
+        const res = await API.get("/get-user", {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+          },
+        });
+        // console.log("get server",res)
+
+        setProfile({
+          name: res.data.data.name,
+          email: res.data.data.email,
+          phone: res.data.data.phone,
+          image: res.data.data.image,
+          location: res.data.data.location,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, [data]);
+
+  const handleSubmit = useMutation(async (e) => {
+    try {
+      e.preventDefault();
+
+      const formData = new FormData();
+
+      formData.set("name", profile.name);
+      formData.set("email", profile.email);
+      formData.set("phone", profile.phone);
+      formData.set("location", profile.location);
+      formData.set("imagename", profile.image);
+      if (preview) {
+        formData.set("image", profile?.image[0], profile?.image[0]?.name);
+      }
+      const response = await API.patch("/user", formData);
+
+      // console.log("formdata", formData);
+      // console.log("data patch", response);
+      router.push("/profil");
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
   return (
     <>
       <Layout title="Edit-Profil">
@@ -30,27 +85,34 @@ export default function EditProfil() {
           <div className="my-12 mx-16">
             <p className="font-extrabold text-4xl font-font_a">Edit Profile</p>
 
-            <form className="grid md:grid-cols-12 gap-2">
+            <form
+              onSubmit={(e) => handleSubmit.mutate(e)}
+              className="grid md:grid-cols-12 gap-2"
+            >
               <div className="grid col-span-8">
                 <Input
-                  name="nameProfil"
+                  name="name"
                   onChange={handleChange}
                   type="text"
+                  defaultValue={profile.name}
                   placeholder="Full Name"
                 />
               </div>
               <div className="grid col-span-4">
                 <label
                   className="bg-fontPrimary h-10 hover:bg-fontPrimary/90 text-white w-full pt-2 text-center text-xs font-bold transition duration-300 rounded"
-                  htmlFor="image"
+                  htmlFor="imageProfil"
                 >
-                  <div className="text-white" >{preview ? preview : "Attach Image"}</div>
+                  <div className="text-white">
+                    {preview ? preview : "Attach Image"}
+                  </div>
                 </label>
                 <Input
-                  name="imageProfil"
+                  name="image"
                   hidden
                   onChange={handleChange}
-                  id="image"
+                  // value=
+                  id="imageProfil"
                   type="file"
                 />
               </div>
@@ -58,6 +120,7 @@ export default function EditProfil() {
                 <Input
                   name="email"
                   type="email"
+                  defaultValue={profile.email}
                   onChange={handleChange}
                   placeholder="Email"
                 />
@@ -65,15 +128,17 @@ export default function EditProfil() {
               <div className="grid col-span-12">
                 <Input
                   name="phone"
-                  type="tell"
+                  type="number"
+                  defaultValue={profile.phone}
                   onChange={handleChange}
                   placeholder="Phone"
                 />
               </div>
               <div className="grid col-span-8">
                 <Input
-                  name="locatio"
+                  name="location"
                   type="text"
+                  defaultValue={profile.location}
                   placeholder="Location"
                   onChange={handleChange}
                 />
@@ -89,7 +154,10 @@ export default function EditProfil() {
               </div>
               <div className="grid col-span-8"></div>
               <div className="grid col-span-4">
-                <Button style="h-8 bg-fontPrimary hover:bg-fontPrimary/80">
+                <Button
+                  type="onsubmit"
+                  style="h-8 bg-fontPrimary hover:bg-fontPrimary/80"
+                >
                   oke
                 </Button>
               </div>

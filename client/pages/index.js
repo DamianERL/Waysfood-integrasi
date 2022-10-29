@@ -5,19 +5,31 @@ import dummyfood from '../public/dummy/food'
 import dummy from '../public/dummy/startup'
 import { useRouter } from 'next/router'
 import Layout from '../components/layout'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../app/userContext'
+import { useQuery } from 'react-query'
+import { API } from '../config/api'
 
 export default function Header() {
   const [showMLogin,setShowMLogin]=useState(false)
-  
-
   const router = useRouter()
-
   const [state,dispatch]=useContext(UserContext)
   const handleclick =()=> setShowMLogin(true)
-// console.log(state.user.status)
 
+  const [data,setData]=useState([])
+  // console.log("data",data)
+  const findUsers =async(e)=>{
+    try { 
+      const res = await API.get("/users")
+      setData(res.data.data)
+    } catch (error) {
+      
+    }
+  }
+  // console.log(data.image)
+useEffect(()=>{
+  findUsers();
+},[])
   return (
     <>
       <Layout title="WaysFood">
@@ -49,7 +61,7 @@ export default function Header() {
             <p className='text-4xl pb-12'>Popular Restaurant</p>
           <div className='grid md:grid-cols-4 gap-2 rounded-lg '>
 
-            {dummy?.map((item,index)=>(
+            {data?.map((item,index)=>(
               <div
               key={index} 
               onClick={
@@ -59,15 +71,15 @@ export default function Header() {
                 }  
               className=''>
                   <div className='flex p-2 bg-white rounded-xl hover:bg-primary/50 '>
-                    <img src={item.image} alt="" />
+                    <img src={item.image} className="w-16 h-16 rounded-full "  alt="" />
                     <p className='text-xl font-extrabold  pl-6 ml-2 mt-4'>{item.name}</p>
                   </div>
               </div>
             ))}
           </div>
-            <section>
+            <section className='mb-16' >
               <h3 className='text-4xl font-font_a mt-10 mb-10' >Restauran Near You</h3>
-              <div className='grid md:grid-cols-4 gap-2 rounded-lg pb-10PP'>
+              <div className=' grid md:grid-cols-4 gap-2 rounded-lg pb-10PP'>
               {dummy?.map((item,index)=>(
                 <div 
                 onClick={state.isLogin === true

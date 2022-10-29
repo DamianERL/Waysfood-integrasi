@@ -17,6 +17,8 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
+var imageprofil = "https://res.cloudinary.com/fnxr/image/upload/v1666926997/user_tfpsob.png"
+
 type handlerAuth struct {
 	AuthRepository repositories.AuthRepository
 }
@@ -59,6 +61,7 @@ func (h *handlerAuth) Register(w http.ResponseWriter, r *http.Request) {
 		Gender:   request.Gender,
 		Phone:    request.Phone,
 		Role:     request.Role,
+		Image:    imageprofil,
 	}
 
 	data, err := h.AuthRepository.Register(user)
@@ -119,11 +122,13 @@ func (h *handlerAuth) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	loginResponse := authdto.LoginResponse{
-		Name:  user.Name,
-		Email: user.Email,
-		Role:  user.Role,
-		// Password: user.Password,
-		Token: token,
+		Name:     user.Name,
+		Email:    user.Email,
+		Role:     user.Role,
+		Phone:    user.Phone,
+		Location: user.Location,
+		Image:    user.Image,
+		Token:    token,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -145,11 +150,13 @@ func (h *handlerAuth) Getuser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := authdto.AuthResponse{
-		ID:    user.ID,
-		Name:  user.Name,
-		Email: user.Email,
-		Role:  user.Role,
+	data := authdto.LoginResponse{
+		Name:     user.Name,
+		Email:    user.Email,
+		Role:     user.Role,
+		Phone:    user.Phone,
+		Location: user.Location,
+		Image:    user.Image,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

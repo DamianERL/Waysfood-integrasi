@@ -10,11 +10,11 @@ import (
 	"waysfood/repositories"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/gorilla/mux"
 )
 
 // var path_files = "http://localhost:5000/uploads/"
-
 
 // connection to repo ->db
 type handlerUser struct {
@@ -38,7 +38,7 @@ func (h *handlerUser) FindUsers(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for i, p := range users {
-		users[i].Image = path_file + p.Image
+		users[i].Image = p.Image
 	}
 
 
@@ -61,7 +61,7 @@ func (h *handlerUser) GetUser(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(response)
 		return
 	}
-	user.Image = path_file + user.Image
+	// user.Image = path_file + user.Image
 
 	w.WriteHeader(http.StatusOK)
 	response := dto.SuccessResult{Status: "success", Data: user}
@@ -71,9 +71,13 @@ func (h *handlerUser) GetUser(w http.ResponseWriter, r *http.Request) {
 func (h *handlerUser) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
+	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
+	id := int(userInfo["id"].(float64))
+
 	dataContex := r.Context().Value("dataFile") // add this code
 	filename := dataContex.(string)             // add this code
 
+	
 	request := usersdto.UpdateUserRequest{
 		Name:     r.FormValue("name"),
 		Email:    r.FormValue("email"),
@@ -81,7 +85,6 @@ func (h *handlerUser) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		Phone:    r.FormValue("phone"),
 	}
 
-	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 
 	user, _ := h.UserRepository.GetUser(int(id))
 
@@ -99,7 +102,7 @@ func (h *handlerUser) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		user.Location = request.Location
 	}
 	if filename != "" {
-		user.Image = filename
+		user.Image = path_file + filename
 	}
 
 	//update method from repo

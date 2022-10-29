@@ -35,7 +35,7 @@ export default function Register() {
         const body = JSON.stringify(input)
       
         const response= await API.post("/register",body)
-      console.log("ini data",response)
+      // console.log("ini data",response)
 
 
       } catch (error) {
@@ -54,7 +54,7 @@ export default function Register() {
         <Input onChange={handleChange} placeholder='FULLNAME' name="name" type="text" />
         <Input onChange={handleChange} placeholder='PASSWORD' type="password" name="password" />
         <Input onChange={handleChange} placeholder='GENDER' type="text" name="gender" />
-        <Input onChange={handleChange} placeholder='PHONE'name="phone" type="tell" />
+        <Input onChange={handleChange} placeholder='PHONE'name="phone" type="number" />
         <select className=' p-0 mb-3 px-4 py-2 w-full bg-bginput rounded focus:outline-none focus:ring focus:ring-violet-300' 
         name="role" onChange={handleChange} >
           <option  hidden></option>

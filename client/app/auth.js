@@ -9,11 +9,12 @@ export const Auth = ({ children }) => {
   const [state, dispatch] = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
 
+  // console.log("ok",state.user.role)
   useEffect(() => {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
     }
-
+    
     // Redirect Auth
     if (state.isLogin === false && !isLoading) {
       router.push("/");
@@ -28,9 +29,13 @@ export const Auth = ({ children }) => {
 
   const checkUser = async () => {
     try {
-      const response = await API.get("/get-user");
+      const response = await API.get("/get-user",{
+        headers : {
+          Authorization:`Bearer ${localStorage.token}`
+        }
+      });
 
-      console.log("ini data user", response);
+      // console.log("ini data user", response);
 
       // If the token incorrect
       if (response.status === 404) {
@@ -38,10 +43,10 @@ export const Auth = ({ children }) => {
           type: "AUTH_ERROR",
         });
       }
-
+      
       // Get user data
       let payload = response.data.data;
-      console.log("oke", payload);
+      // console.log("oke", payload);
       // Get token from local storage
       payload.token = localStorage.token;
 
@@ -61,7 +66,5 @@ export const Auth = ({ children }) => {
     checkUser();
   }, []);
 
-  return <>
-  {children}
-  </>;
+  return <>{children}</>;
 };
