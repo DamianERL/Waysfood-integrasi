@@ -14,7 +14,7 @@ export const Auth = ({ children }) => {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
     }
-    
+
     // Redirect Auth
     if (state.isLogin === false && !isLoading) {
       router.push("/");
@@ -29,10 +29,10 @@ export const Auth = ({ children }) => {
 
   const checkUser = async () => {
     try {
-      const response = await API.get("/get-user",{
-        headers : {
-          Authorization:`Bearer ${localStorage.token}`
-        }
+      const response = await API.get("/get-user", {
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
       });
 
       // console.log("ini data user", response);
@@ -43,7 +43,7 @@ export const Auth = ({ children }) => {
           type: "AUTH_ERROR",
         });
       }
-      
+
       // Get user data
       let payload = response.data.data;
       // console.log("oke", payload);
@@ -62,9 +62,11 @@ export const Auth = ({ children }) => {
     }
   };
 
+  // user : {asdadadsadasd}
+
   useEffect(() => {
     checkUser();
   }, []);
 
-  return <>{children}</>;
+  return <>{isLoading ? <></> : children}</>;
 };

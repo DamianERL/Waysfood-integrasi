@@ -46,6 +46,23 @@ func (h *handlerUser) FindUsers(w http.ResponseWriter, r *http.Request) {
 	response := dto.SuccessResult{Status: "success", Data: users}
 	json.NewEncoder(w).Encode(response)
 }
+func (h *handlerUser) FindPartners (w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	users,err:=h.UserRepository.FindPartners("patner")
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		response := dto.ErrorResult{Code: http.StatusBadRequest, Message: err.Error()}
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	
+
+	w.WriteHeader(http.StatusOK)
+	response := dto.SuccessResult{Status:"success", Data: users}
+	json.NewEncoder(w).Encode(response)
+}
 
 func (h *handlerUser) GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")

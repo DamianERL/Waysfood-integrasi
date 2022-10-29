@@ -29,7 +29,11 @@ export default function editProfilPatner() {
   useEffect(()=>{
     const getData= async(e)=>{
       try {
-        const res = await API.get("/get-user")
+        const res = await API.get("/get-user",{
+          headers : {
+            Authorization:`Bearer ${localStorage.token}`
+          }
+        });
         setPatner(res.data.data)
       } catch (error) {
         console.log(error);

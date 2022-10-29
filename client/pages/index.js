@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../app/userContext'
 import { useQuery } from 'react-query'
 import { API } from '../config/api'
+import Card from '../components/Atoms/card'
 
 export default function Header() {
   const [showMLogin,setShowMLogin]=useState(false)
@@ -20,7 +21,7 @@ export default function Header() {
   // console.log("data",data)
   const findUsers =async(e)=>{
     try { 
-      const res = await API.get("/users")
+      const res = await API.get("/patners")
       setData(res.data.data)
     } catch (error) {
       

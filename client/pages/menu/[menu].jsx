@@ -17,7 +17,11 @@ export default function Menu() {
 
   useEffect(()=>{
     const findProduct= async(e)=>{
-      const res= await API.get(`/user/${index}`)
+      const res= await API.get(`/user/${index}`,{
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      })
       setData(res.data.data)
     }
     findProduct()
@@ -59,7 +63,7 @@ export default function Menu() {
                     <div 
           
                     className='p-2'>
-                    <img className='w-80 my-1 ' src={item?.image} alt="" />
+                    <img className='w-56 h-44 my-4 ' src={item?.image} alt="" />
                     <p  className='font-extrabold text-lg font-font_a text-primary' >
                       {item?.Name}
                       </p>

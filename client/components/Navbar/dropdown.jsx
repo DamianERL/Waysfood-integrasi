@@ -18,7 +18,11 @@ export default function dropdown() {
   useEffect(()=>{
     const getData= async(e)=>{
       try {
-        const res= await API.get("/get-user")
+        const res = await API.get("/get-user",{
+          headers : {
+            Authorization:`Bearer ${localStorage.token}`
+          }
+        });
         setImagep(res.data.data)
       } catch (error) {
         console.log(error);
@@ -99,6 +103,19 @@ export default function dropdown() {
                       alt=""
                     />
                     <p className="m-2">Add Product</p>
+                  </div>
+                </Link>
+              ) : (
+                ""
+              )}
+               {state.user.role === "patner" ? (
+                <Link href="/list-product">
+                  <div className="flex items-center">
+                    <img
+                      src="https://res.cloudinary.com/fnxr/image/upload/v1665566974/burger_fyxhgs.svg"
+                      alt=""
+                    />
+                    <p className="m-2">List Product</p>
                   </div>
                 </Link>
               ) : (

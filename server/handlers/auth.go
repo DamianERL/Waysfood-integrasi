@@ -151,6 +151,7 @@ func (h *handlerAuth) Getuser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := authdto.LoginResponse{
+		ID:       user.ID,
 		Name:     user.Name,
 		Email:    user.Email,
 		Role:     user.Role,

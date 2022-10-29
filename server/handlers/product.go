@@ -123,7 +123,7 @@ func (h *handlerProduct) UpdateProduct(w http.ResponseWriter, r *http.Request) {
 		product.Price = request.Price
 	}
 	if filename != "" {
-		product.Image = request.Image
+		product.Image = path_file + request.Image
 	}
 
 	data, err := h.ProductRepository.UpdateProduct(product)
