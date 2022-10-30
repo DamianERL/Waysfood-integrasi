@@ -71,7 +71,7 @@ useEffect(()=>{
                  : handleclick
                 }  
               className=''>
-                  <div className='flex p-2 bg-white rounded-xl hover:bg-primary/50 '>
+                  <div className='flex p-2 drop-shadow-xl  bg-white rounded-xl hover:bg-primary/50 '>
                     <img src={item.image} className="w-16 h-16 rounded-full "  alt="" />
                     <p className='text-xl font-extrabold  pl-6 ml-2 mt-4'>{item.name}</p>
                   </div>
@@ -87,7 +87,7 @@ useEffect(()=>{
                   ? ()=>(router.push(`/menu/${item.id}`)  ) 
                   : handleclick
                  }  
-                key={index} className='bg-white rounded hover:bg-primary/80 p-3'>
+                key={index} className='bg-white rounded drop-shadow-xl hover:bg-primary/80 p-3'>
                   <img className=' w-80' src={item.menu?.[0].image} alt="" />
                   <p className='my-2 font-extrabold font_a' >{item.menu?.[0].name}</p>
                   <p className='font_a font-normal' >{item?.distance}</p>

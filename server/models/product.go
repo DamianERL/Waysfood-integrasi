@@ -16,11 +16,12 @@ type Product struct {
 }
 
 type ProductResponse struct {
-	ID     int    `json:"id"`
-	Name   string `json:"Name"`
-	Price  int    `json:"price"`
-	Image  string `json:"image"`
-	UserID int    `json:"-"`
+	ID     int         `json:"id"`
+	Name   string      `json:"Name"`
+	Price  int         `json:"price"`
+	Image  string      `json:"image"`
+	UserID int         `json:"-"`
+	User   UserProfile `json:"user"`
 }
 
 func (ProductResponse) TableName() string {

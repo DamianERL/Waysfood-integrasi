@@ -17,7 +17,7 @@ type CartRepository interface {
 	//udah di fetching bakal tinggal di chart dan yang sudah tidak tinggal di cart)
 	FindbyIDCart(CartId int, Status string) (models.Cart, error)
 	//ngk dipakai
-	GetOneCart(ID int) (models.Cart, error)
+	// GetOneCart(ID int) (models.Cart, error)
 }
 
 func RepositoryCart(db *gorm.DB) *repository {
@@ -54,9 +54,9 @@ func (r *repository) DeleteCart(cart models.Cart) (models.Cart, error) {
 	return cart, err
 }
 
-func (r *repository) FindbyIDCart(ID int) (models.Cart, error) {
-	var cart models.Cart
-	err := r.db.Preload("Product").Preload("Product.User").Preload("Buyer").Preload("Seller").First(&cart, "id=?", ID).Error
+func (r *repository) FindbyIDCart(CartId int, Status string) (models.Cart, error) {
+	var Cart models.Cart
+	err := r.db.Preload("User").Preload("Order").Preload("Order.Product").Preload("Order.Product.User").Where("user_id = ? AND status = ?", CartId, Status).First(&Cart).Error
 
-	return cart, err
+	return Cart, err
 }

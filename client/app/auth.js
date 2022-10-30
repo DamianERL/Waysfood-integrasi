@@ -18,13 +18,7 @@ export const Auth = ({ children }) => {
     // Redirect Auth
     if (state.isLogin === false && !isLoading) {
       router.push("/");
-    } else {
-      if (state.user.role === "partner") {
-        router.push("/transaction");
-      } else if (state.user.role === "customer") {
-        router.push("/");
-      }
-    }
+    } 
   }, [state]);
 
   const checkUser = async () => {

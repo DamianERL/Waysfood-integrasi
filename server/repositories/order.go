@@ -45,9 +45,14 @@ func (r *repository) UpdateOrder(order models.Order) (models.Order, error) {
 	return order, err
 }
 
+func (r *repository) DeleteOrder(order models.Order) (models.Order, error) {
+	err := r.db.Delete(&order).Error
+
+	return order, err
+}
 func (r *repository) GetCartID(UserID int) (models.Cart, error) {
 	var cart models.Cart
 	err := r.db.Preload("User").Preload("Order").Preload("Order.Product").Where("user_id=? AND status = ?", UserID, "pending").First(&cart).Error
-	
+
 	return cart, err
 }

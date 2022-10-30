@@ -2,18 +2,17 @@ import React, { useContext, useEffect, useState } from 'react'
 import Button from '../../components/Atoms/button'
 import Navbar from '../../components/Navbar/navbar'
 import Rupiah from 'rupiah-format'
-
 import { useRouter } from 'next/router'
 import dummy from '../../public/dummy/startup'
 import Layout from '../../components/layout'
 import { CartContext } from '../../app/cartContext'
 import { API } from '../../config/api'
+import { useMutation } from 'react-query'
 export default function Menu() {
   const router = useRouter()
   const index =router.query.menu
 
   const [data,setData]=useState([])
-
 
   useEffect(()=>{
     const findProduct= async(e)=>{
@@ -27,18 +26,28 @@ export default function Menu() {
     findProduct()
   },[])
 
-  const [carts, setCarts] = useContext(CartContext)
+  const handleClick = useMutation(async({id,price})=>{
+    try {
+      // e.preventDefault();
+      await API.post("/cart", {
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      });
+          const formData={
+            product_id:id,
+            sub_amount:price,
+          }
 
-  const [cart, setCart] = useState([])
+          const res = await API.post("/order",formData)
 
-  const handleCart = (item) => {
-    cart.push(item)
-    setCarts({
-      type: "ADD",
-      dataCart: cart
-    })
-  }
-  // console.log()
+          console.log("formddata",res)
+
+        } catch (error) {
+          
+        }
+  })
+
   return (
     <>
     <Layout title="Menu">
@@ -70,7 +79,7 @@ export default function Menu() {
                     <p className='my-1 text-fontFire'>
                       {Rupiah.convert  (item?.price)}
                       </p>
-                    <Button onClick={()=>handleCart(item)}  style='bg-primary h-6 hover:bg-primary/80' >Order</Button>
+                    <Button onClick={()=>handleClick.mutate({id:item.id,price:item.price})}style='bg-primary h-6 hover:bg-primary/80' >Order</Button>
                     </div>
                 </div>
             ))} 
