@@ -6,8 +6,7 @@ import Input from "../components/Atoms/input";
 import Layout from "../components/layout";
 import Navbar from "../components/Navbar/navbar";
 import { API } from "../config/api";
-// import profile from "../public/dummy/profile";
-
+import swal from 'sweetalert';
 export default function editProfilPatner() {
   const router = useRouter();
 
@@ -46,7 +45,6 @@ export default function editProfilPatner() {
     try {
       e.preventDefault()
       const formData = new FormData();
-      // formData(patner)
       formData.set("name", patner.name);
       formData.set("email", patner.email);
       formData.set("phone", patner.phone);
@@ -57,7 +55,7 @@ export default function editProfilPatner() {
       }
       const res =await API.patch("/user",formData) 
       console.log("res",res)
-      alert("edit-success")
+      swal(`Edit Profil success  `);
       router.push("profil-patner")
     } catch (error) {
       console.log(error);

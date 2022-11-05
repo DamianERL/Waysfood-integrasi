@@ -1,6 +1,7 @@
 //integrasi
 import { useMutation } from "react-query";
 import { API } from "../../config/api";
+import swal from 'sweetalert';
 
 //component
 import Input from '../Atoms/input';
@@ -29,14 +30,14 @@ export default function Register() {
     const handleRegister =useMutation(async(e)=>{
       try {
         e.preventDefault()
+        
   
         
         const body = JSON.stringify(input)
       
-        const response= await API.post("/register",body)
-      // console.log("ini data",response)
-      alert("success")
-      // router.push("/")
+        await API.post("/register",body)
+
+        swal("Register Success")
       } catch (error) {
         console.log(error)
       }

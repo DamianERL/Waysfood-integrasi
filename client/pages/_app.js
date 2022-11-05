@@ -12,7 +12,7 @@ import { API, setAuthToken } from "../config/api";
 function MyApp({ Component, pageProps }) {
   const client = new QueryClient();
   return (
-    <QueryClientProvider client={client}>
+    <QueryClientProvider client={client }>
       <CartContextProvider>
         <UserContextProvider>
           <Auth>

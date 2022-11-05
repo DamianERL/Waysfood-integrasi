@@ -96,6 +96,7 @@ export default function Cart() {
 
   const handleSubmit = useMutation(async (e) => {
     try {
+      console.log("okfbjnkm",data.order[0].product.user.id);
       // e.preventDefault();
       const datatransaction = {
         seller_id: parseInt(data.order[0].product.user.id),

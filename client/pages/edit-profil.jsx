@@ -6,6 +6,8 @@ import Input from "../components/Atoms/input";
 import Layout from "../components/layout";
 import Navbar from "../components/Navbar/navbar";
 import { API } from "../config/api";
+import swal from 'sweetalert';
+
 
 export default function EditProfil() {
   const router = useRouter();
@@ -28,6 +30,10 @@ export default function EditProfil() {
       setPreview(e.target.files[0].name);
     }
   };
+
+
+
+
 
   useEffect(() => {
     const getData = async (e) => {
@@ -71,6 +77,7 @@ export default function EditProfil() {
 
       // console.log("formdata", formData);
       // console.log("data patch", response);
+      swal(`Edit Profil success  `);
       router.push("/profil");
     } catch (error) {
       console.log(error);
@@ -160,6 +167,7 @@ export default function EditProfil() {
                 >
                   oke
                 </Button>
+
               </div>
             </form>
           </div>

@@ -12,7 +12,7 @@ type ResponseTransaction struct {
 	ID     int    `json:"id"`
 	Cart   string `json:"cart"`
 	Buyer  string `json:"buyer"`
-	Seller string `json:"seller"`
+	Seller string `json:"seller_id"`
 	Total  int    `json:"total"`
 	Status string `json:"status"`
 }

@@ -7,6 +7,7 @@ import rupiah from 'rupiah-format'
 import { useRouter } from 'next/router'
 import Layout from '../components/layout'
 import { useEffect } from 'react'
+import moment from 'moment'
 import { API } from '../config/api'
 
 export default function profilePatner() {
@@ -20,7 +21,9 @@ export default function profilePatner() {
   }
 
   const [profil,setProfil]=useState("")
-  const [data,setData]=useState("")
+  const [dataT, setDataT] = useState([]);
+
+
   useEffect(()=>{
     const getData=async(e)=>{
       try {
@@ -35,8 +38,22 @@ export default function profilePatner() {
       }
     }
     getData()
-  },[setData])
+  },[])
 
+  useEffect(() => {
+    const getTransaction = async (e) => {
+      try {
+        const respon = await API.get("/incomes");
+        setDataT(respon.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTransaction();
+  }, []);
+
+
+  console.log(dataT);
 
   return (
     <>
@@ -68,24 +85,35 @@ export default function profilePatner() {
         <div>
           <p className=' ml-40 font-extrabold text-4xl font-font_a mb-5' >History Order</p>
           {/* <div className='overflow-auto h-[23.03rem]'>   */}
-          <div className='overflow-y-auto scrollbar-hide h-[17rem]'>  
-          
-          {Order?.map((item,index)=>(
-            <div key={index} className='mb-2 grid justify-end'>
-              <div  className='grid grid-cols-2   w-96 bg-white rounded-md p-2'>
-                <div className=''>
-                  <p className='font-font_a font-extrabold text-sm' >{item.storeName}</p>
-                  <p>{item.date}</p>
-                  <p className='font-fontred' >{rupiah.convert(item.total)}</p>
-                </div>
-                <div className='grid justify-end'>
-                  <img  src="https://res.cloudinary.com/fnxr/image/upload/v1665626340/Group_16_cb27e3.svg" alt="" />
-                  <p className='bg-green-300/40 text-center rounded font-medium text-xs' >{item.statusorder}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-          </div>
+          <div className="overflow-y-auto scrollbar-hide h-[17rem]">
+                {dataT?.map((item, index) => (
+                  <div key={index} className="mb-2 grid justify-end">
+                    <div className="grid grid-cols-2   w-96 bg-white rounded-md p-2">
+                      <div className="">
+                        <p className="font-font_a font-extrabold text-sm">
+                          {item?.buyer?.name}
+                        </p>
+                        <div className="flex" >
+                        <p>{moment(item.created_at).format("dddd")}</p>
+                        <p>, {moment(item.created_at).format("MMM Do YY ")}</p>
+                        </div>
+                        <p className="font-fontred">
+                          {rupiah.convert(item.total)}
+                        </p>
+                      </div>
+                      <div className="grid justify-end">
+                        <img
+                          src="https://res.cloudinary.com/fnxr/image/upload/v1665626340/Group_16_cb27e3.svg"
+                          alt=""
+                        />
+                        <p className="bg-green-300/40 text-center rounded font-medium text-xs">
+                          {item.status}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>  
         </div>
       </div>
     </div>

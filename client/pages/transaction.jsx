@@ -1,9 +1,34 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../components/layout'
 import Navbar from '../components/Navbar/navbar'
 import Button from '../components/Atoms/button'
+import { API } from '../config/api';
+import moment from 'moment'
 
 export default function Transaction() {
+    const [dataT, setDataT] = useState([]);
+
+
+
+
+
+
+    useEffect(() => {
+        const getTransaction = async (e) => {
+          try {
+            const respon = await API.get("/incomes");
+            setDataT(respon.data.data);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        getTransaction();
+      }, []);
+    
+    
+      console.log(dataT[0]?.cart);
+
+
   return (
     <>
     <Layout title="Transaction">
@@ -18,25 +43,22 @@ export default function Transaction() {
                         <th className='border w-20 border-gray-400 bg-neutral-200'>NO</th>
                         <th className='border w-60 border-gray-400 bg-neutral-200'>Name</th>
                         <th className='border w-60 border-gray-400 bg-neutral-200'>Address</th>
-                        <th className='border w-60 border-gray-400 bg-neutral-200'>Product Order</th>
+                        <th className='border w-60 border-gray-400 bg-neutral-200'>Total</th>
                         <th className='border w-60 border-gray-400 bg-neutral-200'>Status</th>
-                        <th className='border w-60 border-gray-400 bg-neutral-200'>Action</th>
+                        <th className='border w-60 border-gray-400 bg-neutral-200'>Time</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr className='text-center'>
-                        <td className='pl-2 bg-white border border-gray-400'>1</td>
-                        <td className='pl-2 bg-white border border-gray-400'>faki</td>
-                        <td className='pl-2 bg-white border border-gray-400'>jl.ayam</td>
-                        <td className='pl-2 bg-white border border-gray-400'>ayam</td>
-                        <td className='pl-2 bg-white border border-gray-400'>oke</td>
-                        <td className='pl-2 bg-white border  border-gray-400'>
-                            <div className='flex justify-center align-center m-2 gap-2'>
-                            <Button>Cancel</Button>
-                            <Button>Approve</Button>
-                            </div>
-                        </td>
+                {dataT?.map((item, index) => (
+                    <tr key={item.id} className='text-center'>
+                        <td className='pl-2 bg-white border border-gray-400'>{index+1}</td>
+                        <td className='pl-2 bg-white border border-gray-400'>{item?.buyer?.name}</td>
+                        <td className='pl-2 bg-white border border-gray-400'>{item?.buyer?.location}</td>
+                        <td className='pl-2 bg-white border border-gray-400'>{item?.cart?.total}</td>
+                        <td className='pl-2 bg-white border border-gray-400'>{item?.cart?.status}</td>
+                        <td className='pl-2 bg-white border  border-gray-400'>{moment(item.created_at).format("dddd ,MMM Do YY ")}</td>
                     </tr>
+                       ))}
                 </tbody>
                 
             </table>

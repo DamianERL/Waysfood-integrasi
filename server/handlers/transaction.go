@@ -21,8 +21,8 @@ import (
 
 var c = coreapi.Client{
 	ServerKey: os.Getenv("SERVER_KEY"),
-	ClientKey:  os.Getenv("CLIENT_KEY"),
-  }
+	ClientKey: os.Getenv("CLIENT_KEY"),
+}
 
 type handlerTransaction struct {
 	TransactionRepository repositories.TransactionRepository
@@ -48,10 +48,26 @@ func (h *handlerTransaction) FindTransactions(w http.ResponseWriter, r *http.Req
 	response := dto.SuccessResult{Status: "success", Data: transactions}
 	json.NewEncoder(w).Encode(response)
 }
+func (h *handlerTransaction) FindIncomes(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
+	userId := int(userInfo["id"].(float64))
+
+	transactions, err := h.TransactionRepository.FindIncomes(userId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(err.Error())
+	}
+
+	w.WriteHeader(http.StatusOK)
+	response := dto.SuccessResult{Status: "success", Data: transactions}
+	json.NewEncoder(w).Encode(response)
+}
 
 func (h *handlerTransaction) CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	
+
 	userInfo := r.Context().Value("userInfo").(jwt.MapClaims)
 	cartID := int(userInfo["id"].(float64))
 
@@ -75,16 +91,18 @@ func (h *handlerTransaction) CreateTransaction(w http.ResponseWriter, r *http.Re
 	}
 
 	time := time.Now()
-	miliscd := time.Unix()		
+	miliscd := time.Unix()
 
 	transaction := models.Transaction{
-		ID:      int(miliscd),
-		CartID:  cart.ID,
-		BuyerID: cartID,
-		Total:   request.Total,
-		Status:  "pending",
+		ID:       int(miliscd),
+		CartID:   cart.ID,
+		BuyerID:  cartID,
+		SellerID: request.SellerID,
+		Total:    request.Total,
+		Status:   "pending",
 	}
 
+	fmt.Println("data",request.SellerID)
 	log.Print(transaction)
 
 	newsTransaction, err := h.TransactionRepository.CreateTransaction(transaction)
@@ -128,6 +146,7 @@ func (h *handlerTransaction) CreateTransaction(w http.ResponseWriter, r *http.Re
 	response := dto.SuccessResult{Status: "success", Data: snapResp}
 	json.NewEncoder(w).Encode(response)
 }
+
 // Notification method ...
 func (h *handlerTransaction) Notification(w http.ResponseWriter, r *http.Request) {
 	var notificationPayload map[string]interface{}

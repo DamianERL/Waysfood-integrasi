@@ -2,7 +2,7 @@
 import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "../../app/userContext";
-
+import swal from 'sweetalert';
 //component
 import Button from "../Atoms/button";
 import Input from "../Atoms/input";
@@ -29,26 +29,27 @@ export default function Login() {
     try {
       e.preventDefault()
       const body = JSON.stringify(input);
-
+      
       const response = await API.post("/login", body);
-      // console.log("ini login", response);
-
+      
       dispatch({
         type: "LOGIN_SUCCESS",
         payload: response.data.data,
       });
       if (response?.data.data.role === "patner") {
         router.push("/transaction");
+
       } else {
         router.push("/");
       }
-    
+      
+      swal(`Login success  `);
     } catch (error) {}
   });
 
   return (
     <>
-      <div className="p-8">
+      <div className="  p-8">
         <p className=" font-bold text-4xl mt-1 mb-10 text-primary ">Login</p>
         <form
           onSubmit={(e) => handleSubmit.mutate(e)}
