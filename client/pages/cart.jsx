@@ -30,56 +30,44 @@ export default function Cart() {
     {
       const findPending = async (e) => {
         try {
-          const res = await API.get("/cart-status", {
-          headers: {
-            Authorization: `Bearer ${localStorage.token}`,
-          },
-        });
-        setData(res.data.data);
-        
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        setIsLoading(false);
-      }
-    };
-    findPending();
-  }
-  }, [
-    // isLoading
-  ]);
+          const res = await API.get("/cart-status");
+          setData(res.data.data);
+
+          setIsLoading(false);
+        } catch (error) {
+          console.log(error);
+          setIsLoading(false);
+        }
+      };
+      findPending();
+    }
+  }, []);
 
   const handleDelete = useMutation(async (id) => {
     try {
       await API.delete(`/order/${id}`);
-      const res = await API.get("/cart-status", {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-        },
-      });
+      const res = await API.get("/cart-status");
       setData(res.data.data);
     } catch (error) {
       console.log(error);
     }
   });
 
+  console.log("order", data.order);
   // update
   const increaseOrder = useMutation(async ({ id, qty, price }) => {
     const updateQty = qty + 1;
     const updateTotal = price * updateQty;
 
+    // console.log("cartid",);
     const body = JSON.stringify({
       qty: updateQty,
       sub_amount: updateTotal,
     });
-    const res = await API.patch(`/order/${id}`, body, {
-      headers: {
-        Authorization: `Bearer ${localStorage.token}`,
-      },
-    });
-    // setIsLoading(true)
+    await API.patch(`/order/${id}`, body);
+    const res = await API.get("/cart-status");
+    setData(res.data.data);
   });
-
 
   const decreaseOrder = useMutation(async ({ id, qty, sub_amount, price }) => {
     const updateQty = qty - 1;
@@ -88,12 +76,9 @@ export default function Cart() {
       qty: updateQty,
       sub_amount: updateTotal,
     });
-    const res = await API.patch(`/order/${id}`, body, {
-      headers: {
-        Authorization: `Bearer ${localStorage.token}`,
-      },
-    });
-    // console.log(res)
+    await API.patch(`/order/${id}`, body);
+    const res = await API.get("/cart-status");
+    setData(res.data.data);
   });
   //Payment
 
@@ -111,29 +96,40 @@ export default function Cart() {
 
   const handleSubmit = useMutation(async (e) => {
     try {
-      e.preventDefault();
+      // e.preventDefault();
       const datatransaction = {
+        seller_id: parseInt(data.order[0].product.user.id),
         total: totalPay,
       };
-      // const res = await API.post("/transaction",datatransaction)
-      const response = await API.post("/transaction", datatransaction);
 
-      const token = response.data.token;
+      console.log("datatrabsa", datatransaction);
+      const response = await API.post("/transaction", datatransaction);
+      console.log("check res", response);
+
+      const token = response.data.data.token;
+
+      const dataUpdate = {
+        qty: totalqty,
+        total: totalPay,
+        status: "success",
+      };
+
+      await API.patch("cartID", dataUpdate);
 
       window.snap.pay(token, {
         onSuccess: function (result) {
           /* You may add your own implementation here */
-          console.log(result);
+          console.log("success", result);
           history.push("/profile");
         },
         onPending: function (result) {
           /* You may add your own implementation here */
-          console.log(result);
+          console.log("pending", result);
           history.push("/profile");
         },
         onError: function (result) {
           /* You may add your own implementation here */
-          console.log(result);
+          console.log("error", result);
         },
         onClose: function () {
           /* You may add your own implementation here */
@@ -142,14 +138,6 @@ export default function Cart() {
       });
 
       //
-      console.log("res", res);
-      const data = {
-        qty: totalqty,
-        total: totalPay,
-        status: "success",
-      };
-
-      await API.patch("cartID", data);
     } catch (error) {
       console.log(error);
     }
