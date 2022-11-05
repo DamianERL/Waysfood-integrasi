@@ -12,7 +12,8 @@ type CreateCart struct {
 
 type UpdateCart struct {
 	Status   string `json:"Status"`
-	SubTotal int `json:"Subtotal"`
-	Shipping int `json:"shipping"`
-	Total    int `json:"total"`
+	SubTotal int    `json:"Subtotal"`
+	Shipping int    `json:"shipping"`
+	Total    int    `json:"total"`
+	QTY      int    `json:"qty"`
 }

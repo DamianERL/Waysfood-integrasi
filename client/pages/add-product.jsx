@@ -1,4 +1,4 @@
-import Router from "next/router";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useMutation } from "react-query";
 import Button from "../components/Atoms/button";
@@ -8,7 +8,7 @@ import Navbar from "../components/Navbar/navbar";
 import { API } from "../config/api";
 
 export default function addProduct() {
-  // const route = Router();
+  const route = useRouter()
 
   const [preview, setPreview] = useState(null);
   const [input, setInput] = useState("");
@@ -39,7 +39,7 @@ export default function addProduct() {
       const res = await API.post("/product", formData);
       alert("success add product ");
       // console.log("post product", res);
-      // route.push("/transaction")
+      route.push("/list-product")
     } catch (error) {
       console.log(error);
     }

@@ -153,10 +153,12 @@ func (h *handlerCart) UpdateCart(w http.ResponseWriter, r *http.Request){
 	if request.Total !=0{
 		cart.Total= request.Total
 	}
-
-	if request.Shipping !=0{
-		cart.Shipping= request.Shipping
+	if request.QTY !=0{
+		cart.QTY= request.QTY
 	}
+	// if request.Shipping !=0{
+	// 	cart.Shipping= request.Shipping
+	// }
 
 	if request.Status !="pending"{
 		cart.Status= request.Status

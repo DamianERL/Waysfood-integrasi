@@ -6,7 +6,7 @@ import Link from "next/link";
 import { UserContext } from "../../app/userContext";
 import { CartContext } from "../../app/cartContext";
 import { API } from "../../config/api";
-export default function dropdown() {
+export default function dropdown({counter}) {
   const router = useRouter();
   const [modalProfil, setModalProfil] = useState(false);
   const [state, dispatch] = useContext(UserContext);
@@ -53,14 +53,14 @@ export default function dropdown() {
         {state.user.role === "customer"?
         
         <div className=
-          {carts.cart?.length ===null
+          {counter ===null
           ?"hidden"
-          :carts.cart?.length === 0
+          :counter === 0
           ?"hidden"
-          :carts.cart?.length ===undefined
+          :counter ===undefined
           ?"hidden"
           :"circle"
-          }>{carts.cart?.length}
+          }>{counter}
         </div>
         :""}
         <img

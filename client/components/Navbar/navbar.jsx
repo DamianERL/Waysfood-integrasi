@@ -6,7 +6,7 @@ import Link from 'next/link'
 
 import { UserContext } from '../../app/userContext'
 import { useContext } from 'react'
-export default function Navbar({setShowMLogin,showMLogin}) {
+export default function Navbar({setShowMLogin,showMLogin,counter}) {
 
   const[state,dispatch]=useContext(UserContext)
   
@@ -25,7 +25,7 @@ export default function Navbar({setShowMLogin,showMLogin}) {
         </Link>
         <div className='flex gap-3'>
           {isLogin?(
-            <Dropdown/>
+            <Dropdown counter={counter} />
             ):(
               <ModalAuth setShowMLogin={setShowMLogin} showMLogin={showMLogin} />
           )}

@@ -13,12 +13,13 @@ export const Auth = ({ children }) => {
   useEffect(() => {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
+      
     }
 
     // Redirect Auth
     if (state.isLogin === false && !isLoading) {
       router.push("/");
-    } 
+    }
   }, [state]);
 
   const checkUser = async () => {
@@ -38,13 +39,8 @@ export const Auth = ({ children }) => {
         });
       }
 
-      // Get user data
       let payload = response.data.data;
-      // console.log("oke", payload);
-      // Get token from local storage
       payload.token = localStorage.token;
-
-      // Send data to useContext
       dispatch({
         type: "USER_SUCCESS",
         payload,
@@ -53,6 +49,9 @@ export const Auth = ({ children }) => {
     } catch (error) {
       console.log(error);
       setIsLoading(false);
+      if (error.response.data.code === 401) {
+        router.push("/");
+      }
     }
   };
 

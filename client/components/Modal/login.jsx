@@ -14,7 +14,8 @@ import { API } from "../../config/api";
 export default function Login() {
   const [state, dispatch] = useContext(UserContext);
   const [input, setInput] = useState("");
-  const route = useRouter();
+  
+  const router = useRouter();
 
   // console.log(state)
   const handleChange = (e) => {
@@ -26,8 +27,7 @@ export default function Login() {
 
   const handleSubmit = useMutation(async (e) => {
     try {
-      e.preventDefault();
-
+      e.preventDefault()
       const body = JSON.stringify(input);
 
       const response = await API.post("/login", body);
@@ -37,6 +37,12 @@ export default function Login() {
         type: "LOGIN_SUCCESS",
         payload: response.data.data,
       });
+      if (response?.data.data.role === "patner") {
+        router.push("/transaction");
+      } else {
+        router.push("/");
+      }
+    
     } catch (error) {}
   });
 

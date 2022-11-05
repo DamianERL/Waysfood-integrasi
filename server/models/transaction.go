@@ -3,12 +3,15 @@ package models
 import "time"
 
 type Transaction struct {
-	ID        int       `json:"id" gorm:"primary_key:auto_increment" `
-	BuyerID   int       `json:"-"`
-	SellerID  int       `json:"-"`
-	CartID    int       `json:"-" `
-	Cart      Cart      `json:"cart"`
-	Status    string    `json:"status"`
-	CreatedAt time.Time `json:"-"`
-	UpdatedAt time.Time `json:"-"`
+	ID        int         `json:"id" gorm:"primary_key:auto_increment" `
+	BuyerID   int         `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" `
+	Buyer     UserProfile `json:"buyer"`
+	SelerID   int         `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"`
+	Seler     UserProfile `json:"seller"`
+	CartID    int         `json:"-" gorm:"constraint:OnUpdate:CASCADE,OnDelete:CASCADE;"  `
+	Cart      Cart        `json:"cart"  `
+	Total     int         `json:"total"`
+	Status    string      `json:"status"`
+	CreatedAt time.Time   `json:"create_at"`
+	UpdatedAt time.Time   `json:"-"`
 }

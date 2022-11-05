@@ -1,20 +1,15 @@
-import Head from 'next/head'
 import Navbar from '../components/Navbar/navbar'
-import Image from 'next/image'
-import dummyfood from '../public/dummy/food'
 import dummy from '../public/dummy/startup'
 import { useRouter } from 'next/router'
 import Layout from '../components/layout'
 import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../app/userContext'
-import { useQuery } from 'react-query'
 import { API } from '../config/api'
-import Card from '../components/Atoms/card'
 
 export default function Header() {
   const [showMLogin,setShowMLogin]=useState(false)
   const router = useRouter()
-  const [state,dispatch]=useContext(UserContext)
+  const [state]=useContext(UserContext)
   const handleclick =()=> setShowMLogin(true)
 
   const [data,setData]=useState([])
@@ -80,7 +75,7 @@ useEffect(()=>{
           </div>
             <section className='mb-16' >
               <h3 className='text-4xl font-font_a mt-10 mb-10' >Restauran Near You</h3>
-              <div className=' grid md:grid-cols-4 gap-2 rounded-lg pb-10PP'>
+              <div className='   grid md:grid-cols-4 gap-2 rounded-lg pb-10PP'>
               {dummy?.map((item,index)=>(
                 <div 
                 onClick={state.isLogin === true

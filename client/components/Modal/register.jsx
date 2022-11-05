@@ -9,9 +9,11 @@ import Button from '../Atoms/button';
 //import
 import { useContext, useState } from 'react';
 import { UserContext } from '../../app/userContext';
+import { useRouter } from "next/dist/client/router";
 
 
 export default function Register() {
+  const router = useRouter()
   const [state, dispatch] = useContext(UserContext);
 
     const [input,setInput]= useState("")
@@ -26,18 +28,15 @@ export default function Register() {
 
     const handleRegister =useMutation(async(e)=>{
       try {
-        const config = {
-          headers:{
-            "Content-type":"application/json"
-          },
-        }
+        e.preventDefault()
+  
         
         const body = JSON.stringify(input)
       
         const response= await API.post("/register",body)
       // console.log("ini data",response)
-
-
+      alert("success")
+      // router.push("/")
       } catch (error) {
         console.log(error)
       }

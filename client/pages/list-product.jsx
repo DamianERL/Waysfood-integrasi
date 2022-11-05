@@ -6,6 +6,7 @@ import Button from "../components/Atoms/button";
 import { UserContext } from "../app/userContext";
 import { API } from "../config/api";
 import Router from "next/router";
+import { useMutation } from "react-query";
 
 export default function Transaction() {
   const [state] = useContext(UserContext);
@@ -31,6 +32,21 @@ export default function Transaction() {
     };
     findProduct();
   }, [setData]);
+
+
+  const handleDelete = useMutation(async (id) => {
+    try {
+      await API.delete(`/product/${id}`);
+      const res = await API.get(`/user/${ID}`,{
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      });
+      setData(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  });
 
   return (
     <>
@@ -87,7 +103,9 @@ export default function Transaction() {
                         >
                           Edit
                         </Button>
-                        <Button>Delete</Button>
+                        <Button
+                        onClick={()=>handleDelete.mutate(item.id)}
+                        >Delete</Button>
                       </div>
                     </td>
                   </tr>

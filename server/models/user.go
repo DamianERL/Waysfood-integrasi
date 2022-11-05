@@ -14,8 +14,8 @@ type User struct {
 	Image        string            `json:"image" gorm:"type:varchar(255)"`
 	Products     []ProductResponse `json:"product" `
 	Carts        []Cart            `json:"carts"`
-	Transactions []Transaction     `json:"transaction" gorm:"foreignKey:BuyerID" `
-	Incomes      []Transaction     `json:"income" gorm:"foreignKey:SellerID" `
+	Transactions []Transaction     `json:"transactions" gorm:"foreignKey:BuyerID" `
+	Income       []Transaction     `json:"income" gorm:"foreignKey:BuyerID" `
 	CreatedAt    time.Time         `json:"-"`
 	UpdatedAt    time.Time         `json:"-"`
 }

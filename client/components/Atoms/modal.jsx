@@ -10,7 +10,7 @@ export default function Modal({isVisible,style,children,onClose}) {
     <div id="wrapper"
      onClick={handlclose} className="
      fixed flex justify-center items-center inset-0 bg-black/25">
-      <div className= 'rounded bg-white'>
+      <div className= 'rounded z-20 bg-white'>
         {children}
       </div>
     </div>

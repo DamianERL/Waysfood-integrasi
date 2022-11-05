@@ -57,6 +57,7 @@ export default function editProfilPatner() {
       }
       const res =await API.patch("/user",formData) 
       console.log("res",res)
+      alert("edit-success")
       router.push("profil-patner")
     } catch (error) {
       console.log(error);

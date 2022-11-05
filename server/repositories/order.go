@@ -28,7 +28,7 @@ func (r *repository) FindOrder() ([]models.Order, error) {
 }
 func (r *repository) GetOrder(ID int) (models.Order, error) {
 	var order models.Order
-	err := r.db.Preload("Product").First(&order).Error
+	err := r.db.Preload("Product").First(&order,ID).Error
 
 	return order, err
 }

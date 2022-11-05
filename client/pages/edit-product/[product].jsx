@@ -64,7 +64,7 @@ export default function addProduct() {
       const res = await API.patch(`/product/${id}`, formData);
       alert("success add product ");
       // console.log("post product", res);
-      // route.push("/transaction")
+      router.push("/list-product")
     } catch (error) {
       console.log(error);
     }
