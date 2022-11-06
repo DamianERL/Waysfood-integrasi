@@ -1,16 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import Button from "../components/Atoms/button";
 import Navbar from "../components/Navbar/navbar";
-import Dprofile from "../public/dummy/profile";
-import Order from "../public/dummy/order";
+
 import rupiah from "rupiah-format";
 import { useRouter } from "next/router";
 import Layout from "../components/layout";
 import { API } from "../config/api";
-import moment from 'moment'
+import moment from "moment";
 export default function Profil() {
-
-  
   const router = useRouter();
   const [profil, setProfil] = useState("");
   const [profils, setProfils] = useState("");
@@ -49,9 +46,7 @@ export default function Profil() {
     getTransaction();
   }, []);
 
-
-  console.log(dataT);
-
+  console.log("data", dataT);
   return (
     <>
       <Layout title="profile">
@@ -64,7 +59,7 @@ export default function Profil() {
               </p>
               <div className="flex gap-8">
                 <img
-                  className="w-44 rounded-md h-56"
+                  className="w-44 object-center object-cover rounded-md h-56"
                   src={profils.image}
                   alt=""
                 />
@@ -104,12 +99,16 @@ export default function Profil() {
                   <div key={index} className="mb-2 grid justify-end">
                     <div className="grid grid-cols-2   w-96 bg-white rounded-md p-2">
                       <div className="">
-                        <p className="font-font_a font-extrabold text-sm">
+                        <p className="font-font_a font-extrabold text-lg">
                           {item.cart?.order[0].product?.user?.name}
                         </p>
-                        <div className="flex" >
-                        <p>{moment(item.created_at).format("dddd")}</p>
-                        <p>, {moment(item.created_at).format("MMM Do YY ")}</p>
+                        <div className="flex">
+                          <p className="text-sm font-bold">
+                            {moment(item.created_at).format("dddd")}
+                          </p>
+                          <p>
+                            , {moment(item.created_at).format("MMM Do YY ")}
+                          </p>
                         </div>
                         <p className="font-fontred">
                           {rupiah.convert(item.total)}
@@ -120,7 +119,13 @@ export default function Profil() {
                           src="https://res.cloudinary.com/fnxr/image/upload/v1665626340/Group_16_cb27e3.svg"
                           alt=""
                         />
-                        <p className="bg-green-300/40 text-center rounded font-medium text-xs">
+                        <p
+                          className={
+                            item.status == "success"
+                              ? "bg-green-300/40 text-center rounded font-medium text-xs"
+                              : "bg-yellow-300/40 text-center rounded font-medium text-xs"
+                          }
+                        >
                           {item.status}
                         </p>
                       </div>

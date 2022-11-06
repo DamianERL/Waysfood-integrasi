@@ -14,9 +14,6 @@ export default function Transaction() {
 
   const [data, setData] = useState([]);
 
-  console.log("data product", data.product);
-  console.log("data", ID);
-
   useEffect(() => {
     const findProduct = async (e) => {
       try {
@@ -76,14 +73,14 @@ export default function Transaction() {
                 </tr>
               </thead>
               {data?.product?.map((item, index) => (
-                <tbody key={index}>
+                <tbody key={item.id}>
                   <tr className="text-center  ">
                     <td className="pl-2 bg-white border border-gray-400">
-                      {item.id}
+                      {index+1}
                     </td>
                     <td className="pl-2 flex items-center justify-center bg-white border border-gray-400">
                       <img
-                        className="w-20 my-4 h-16 rounded-lg"
+                        className="w-20 my-4 h-16 object-center object-cover rounded-lg"
                         src={item?.image}
                         alt=""
                       />

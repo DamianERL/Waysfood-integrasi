@@ -12,7 +12,6 @@ export default function addProduct() {
 
   const [preview, setPreview] = useState(null);
   const [input, setInput] = useState("");
-  // console.log(input);
   const handleChange = (e) => {
     setInput({
       ...input,
@@ -38,7 +37,6 @@ export default function addProduct() {
 
       const res = await API.post("/product", formData);
       alert("success add product ");
-      // console.log("post product", res);
       route.push("/list-product")
     } catch (error) {
       console.log(error);

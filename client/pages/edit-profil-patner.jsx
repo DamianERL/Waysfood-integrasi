@@ -53,8 +53,7 @@ export default function editProfilPatner() {
       if(preImage){
         formData.set("image",patner?.image[0],patner?.image[0]?.name)
       }
-      const res =await API.patch("/user",formData) 
-      console.log("res",res)
+      await API.patch("/user",formData) 
       swal(`Edit Profil success  `);
       router.push("profil-patner")
     } catch (error) {
@@ -132,10 +131,13 @@ export default function editProfilPatner() {
               <div className="grid col-span-4">
                 <Button style="h-10 flex justify-center items-center gap-2 py-2 px-10 bg-fontPrimary hover:bg-fontPrimary/90">
                   select on map{" "}
+                  
+
                   <img
                     src="https://res.cloudinary.com/fnxr/image/upload/v1665602704/map_1_gt40ww.svg"
                     alt=""
-                  />
+                    />
+                    
                 </Button>
               </div>
               <div className="grid col-span-8"></div>

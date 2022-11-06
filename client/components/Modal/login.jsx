@@ -17,7 +17,6 @@ export default function Login() {
   
   const router = useRouter();
 
-  // console.log(state)
   const handleChange = (e) => {
     setInput({
       ...input,

@@ -4,13 +4,13 @@ import { useRouter } from "next/router";
 import Dropdown from "../Atoms/dropdown";
 import Link from "next/link";
 import { UserContext } from "../../app/userContext";
-import { CartContext } from "../../app/cartContext";
+
 import { API } from "../../config/api";
 export default function dropdown({counter}) {
   const router = useRouter();
   const [modalProfil, setModalProfil] = useState(false);
   const [state, dispatch] = useContext(UserContext);
-  const [carts,setCarts]=useContext(CartContext)
+
 
   const [imagep,setImagep]=useState("")
   const [data,setData]=useState("")

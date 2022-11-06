@@ -11,11 +11,9 @@ export default function addProduct() {
   const router = useRouter();
   const id = router?.query?.product;
 
-  console.log("dataid",id);
 
   const [preview, setPreview] = useState(null);
   const [input, setInput] = useState("");
-  console.log("data", input);
 
   const handleChange = (e) => {
     setInput({
@@ -63,7 +61,6 @@ export default function addProduct() {
 
       const res = await API.patch(`/product/${id}`, formData);
       alert("success add product ");
-      // console.log("post product", res);
       router.push("/list-product")
     } catch (error) {
       console.log(error);

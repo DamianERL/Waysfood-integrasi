@@ -16,8 +16,6 @@ export default function EditProfil() {
   const [data, setData] = useState([]);
   const [profile, setProfile] = useState("");
 
-  // console.log(preview);
-  // console.log(profile);
 
   const handleChange = (e) => {
     setProfile({
@@ -43,7 +41,6 @@ export default function EditProfil() {
             Authorization: `Bearer ${localStorage.token}`,
           },
         });
-        // console.log("get server",res)
 
         setProfile({
           name: res.data.data.name,
@@ -73,10 +70,8 @@ export default function EditProfil() {
       if (preview) {
         formData.set("image", profile?.image[0], profile?.image[0]?.name);
       }
-      const response = await API.patch("/user", formData);
-
-      // console.log("formdata", formData);
-      // console.log("data patch", response);
+     await API.patch("/user", formData);
+     
       swal(`Edit Profil success  `);
       router.push("/profil");
     } catch (error) {

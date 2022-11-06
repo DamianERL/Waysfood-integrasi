@@ -26,7 +26,6 @@ export default function Transaction() {
       }, []);
     
     
-      console.log(dataT[0]?.cart);
 
 
   return (

@@ -15,7 +15,7 @@ export default function Navbar({setShowMLogin,showMLogin,counter}) {
   const isLogin = state.isLogin
   return (
     <>
-    <nav className='h-24 py-4 bg-primary sticky top-0 '>
+    <nav className='h-24 py-4 bg-primary z-50 sticky top-0 '>
       <div className='flex justify-between px-10 item-center'>
          <Link  href={state.user.role === "patner" ? "/transaction" :"/"} >
         <div  className='flex cursor-pointer  '>

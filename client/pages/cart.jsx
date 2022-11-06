@@ -53,13 +53,10 @@ export default function Cart() {
     }
   });
 
-  console.log("order", data.order);
-  // update
   const increaseOrder = useMutation(async ({ id, qty, price }) => {
     const updateQty = qty + 1;
     const updateTotal = price * updateQty;
 
-    // console.log("cartid",);
     const body = JSON.stringify({
       qty: updateQty,
       sub_amount: updateTotal,
@@ -96,16 +93,13 @@ export default function Cart() {
 
   const handleSubmit = useMutation(async (e) => {
     try {
-      console.log("okfbjnkm",data.order[0].product.user.id);
       // e.preventDefault();
       const datatransaction = {
         seller_id: parseInt(data.order[0].product.user.id),
         total: totalPay,
       };
 
-      console.log("datatrabsa", datatransaction);
       const response = await API.post("/transaction", datatransaction);
-      console.log("check res", response);
 
       const token = response.data.data.token;
 
@@ -174,16 +168,16 @@ export default function Cart() {
               <div className=" mx-14 my-8">
                 <p className="text-4xl flex gap-4 mb-4 items-center font-font_a font-extrabold">
                   <img
-                    className="w-16 h-16 cursor-pointer  rounded-full"
+                    className="w-16 h-16 object-cover object-center cursor-pointer  rounded-full"
                     src={
-                      data?.order[0]?.product?.user?.image
+                      data?.order
                         ? data?.order[0]?.product?.user?.image
                         : ""
                     }
                     alt=""
                   />
-                  {data?.order[0]?.product?.user?.name
-                    ? data?.order[0]?.product?.user?.nam
+                  {data?.order
+                    ? data?.order[0]?.product?.user?.name
                     : ""}
                 </p>
                 <p className="text-lg font-normal text-fontPrimary ">
@@ -224,7 +218,7 @@ export default function Cart() {
                           <div className=" flex">
                             <div className="w-[10rem] h-[6rem]  ">
                               <img
-                                className="w-[8rem] rounded  h-[6rem] "
+                                className="md:w-[8rem] rounded  object-cover object-center h-[6rem] "
                                 src={item.product.image}
                                 alt=""
                               />

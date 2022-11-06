@@ -11,7 +11,6 @@ import { UserContext } from '../../app/userContext';
 export default function ModalAuth({showMLogin,setShowMLogin}) {
   const [state,dispatch]=useContext(UserContext)
   const [showModal,setShowModal]= useState(false)
-  // console.log(state.setShowMLogin)
 
 
   // switch modal

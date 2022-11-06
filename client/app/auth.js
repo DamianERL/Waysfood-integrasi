@@ -9,7 +9,6 @@ export const Auth = ({ children }) => {
   const [state, dispatch] = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
 
-  // console.log("ok",state.user.role)
   useEffect(() => {
     if (localStorage.token) {
       setAuthToken(localStorage.token);
@@ -30,7 +29,6 @@ export const Auth = ({ children }) => {
         },
       });
 
-      // console.log("ini data user", response);
 
       // If the token incorrect
       if (response.status === 404) {
